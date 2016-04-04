@@ -316,6 +316,19 @@ class backup_handler:
       f.write(json.dumps(self.config))
 
 
+  def list_paths(self):
+    """
+      Function listing the paths to the repositories to be walked through
+      by the backup script.
+    """
+
+    self.load_config()
+
+    print "Tag Backup will walk the following directories:"
+    for directory in self.config["paths"]:
+      print directory
+
+
   def perform_backup(self):
     """
       Function handling the whole backup process.
@@ -582,9 +595,11 @@ if __name__ == "__main__":
   parser.add_argument('-i','--init', dest='init', action='store_true',
                    help='Initialize Tag Backup parameters')
   parser.add_argument('-a', '--add', dest='add_paths', action='store',
-                   help='Add paths to directories that the backup handler should include')
+                   help='Add paths to the directories that the backup handler should include')
   parser.add_argument('-d', '--delete', dest='del_paths', action='store',
-                   help='Delete paths to directories that the backp handler include')
+                   help='Delete paths to the directories that the backup handler include')
+  parser.add_argument('-l', '--list', dest='list_paths', action='store_true',
+                   help='List paths to the directories that the backup handler include')
 
   args = parser.parse_args()
 
@@ -596,6 +611,10 @@ if __name__ == "__main__":
 
   if args.del_paths:
     tag_backup.delete_paths(args.del_paths)
+    exit()
+
+  if args.list_paths:
+    tag_backup.list_paths()
     exit()
 
   if args.init:
